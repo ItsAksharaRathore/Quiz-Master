@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% block title %}User Management - Quiz Master{% endblock %}
+{% block content %}
+<div class="container">
+    
+    <!-- Pending Users -->
+    <div class="card mb-4">
+        <div class="card-header bg-warning text-white">
+            Pending Users ({{ pending_users|length }})
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Full Name</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in pending_users %}
+                    <tr>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.full_name }}</td>
+                        <td>
+                            <form action="{{ url_for('approve_user', user_id=user.id) }}" method="post" class="d-inline">
+                                <button type="submit" class="btn btn-sm btn-success">Approve</button>
+                            </form>
+                            <form action="{{ url_for('reject_user', user_id=user.id) }}" method="post" class="d-inline">
+                                <button type="submit" class="btn btn-sm btn-danger">Reject</button>
+                            </form>
+                            <a href="{{ url_for('user_details', user_id=user.id) }}" class="btn btn-sm btn-info">Details</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Approved Users -->
+    <div class="card mb-4">
+        <div class="card-header bg-success text-white">
+            Approved Users ({{ approved_users|length }})
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Full Name</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in approved_users %}
+                    <tr>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.full_name }}</td>
+                        <td>
+                            <a href="{{ url_for('user_details', user_id=user.id) }}" class="btn btn-sm btn-info">Details</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Rejected Users -->
+    <div class="card mb-4">
+        <div class="card-header bg-danger text-white">
+            Rejected Users ({{ rejected_users|length }})
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Full Name</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in rejected_users %}
+                    <tr>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.full_name }}</td>
+                        <td>
+                            <a href="{{ url_for('user_details', user_id=user.id) }}" class="btn btn-sm btn-info">Details</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

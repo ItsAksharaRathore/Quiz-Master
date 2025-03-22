@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}Quiz Statistics{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white text-center">
+            <h3 class="mb-0">📊 Quiz Performance Statistics</h3>
+        </div>
+        <div class="card-body">
+            <!-- Bar Chart: Average Scores by Subject -->
+            <div class="text-center">
+                <h4>📊 Average Quiz Scores by Subject</h4>
+                <img src="data:image/png;base64,{{ img_data['bar_chart'] }}" class="img-fluid rounded shadow" alt="Average Scores Bar Chart">
+            </div>
+
+            <!-- Line Chart: Score Progression -->
+            <div class="text-center mt-4">
+                <h4>📈 Quiz Score Progression Over Time</h4>
+                <img src="data:image/png;base64,{{ img_data['line_chart'] }}" class="img-fluid rounded shadow" alt="Score Progression Line Chart">
+            </div>
+
+            <!-- Pie Chart: Quiz Distribution -->
+            <div class="text-center mt-4">
+                <h4>🥧 Quiz Distribution by Subject</h4>
+                <img src="data:image/png;base64,{{ img_data['pie_chart'] }}" class="img-fluid rounded shadow" alt="Subject Distribution Pie Chart">
+            </div>
+
+            <!-- Scatter Plot: Score vs Total Questions -->
+            <div class="text-center mt-4">
+                <h4>🎯 Score Distribution by Total Questions</h4>
+                <img src="data:image/png;base64,{{ img_data['scatter_chart'] }}" class="img-fluid rounded shadow" alt="Score Scatter Plot">
+            </div>
+
+            <!-- Interactive Plotly Graph -->
+            <div class="mt-4">
+                <h4>📊 Interactive Quiz Performance Overview</h4>
+                <div class="mt-3">
+                    {{ plot_html | safe }}
+                </div>
+            </div>
+
+            <div class="mt-4 text-center">
+                <a href="{{ url_for('user_dashboard') }}" class="btn btn-secondary">Back to Dashboard</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+

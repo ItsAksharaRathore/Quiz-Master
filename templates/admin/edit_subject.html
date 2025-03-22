@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}Edit Subject - Quiz Master{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">Edit Subject</h3>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        
+                        <div class="mb-3">
+                            <label for="name" class="form-label fw-bold">Subject Name</label>
+                            <input type="text" class="form-control" id="name" name="name" value="{{ subject.name }}" required>
+                            <div class="form-text">Enter a unique subject name.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="form-label fw-bold">Subject Description</label>
+                            <textarea class="form-control" id="description" name="description" rows="4" required>{{ subject.description }}</textarea>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Update Subject</button>
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                                <i class="fas fa-trash-alt"></i> Delete Subject
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="text-danger fw-bold">⚠ Warning: This action cannot be undone!</p>
+                <p>Deleting this subject will also remove all associated chapters and quizzes.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form action="{{ url_for('delete_subject', subject_id=subject.id) }}" method="POST">
+                    <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i> Delete Subject</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

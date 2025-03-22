@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Search Results for "{{ query }}"</h2>
+{% if results %}
+    {% if 'users' in results %}
+    <div class="card mb-3">
+        <div class="card-header">
+            <h4>Users</h4>
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Full Name</th>
+                        <th>Qualification</th>
+                        <th>Approval Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in results['users'] %}
+                    <tr>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.full_name }}</td>
+                        <td>{{ user.qualification or 'N/A' }}</td>
+                        <td>{{ user.approval_status }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if 'subjects' in results %}
+    <div class="card mb-3">
+        <div class="card-header">
+            <h4>Subjects</h4>
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for subject in results['subjects'] %}
+                    <tr>
+                        <td>{{ subject.name }}</td>
+                        <td>{{ subject.description or 'No description' }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if 'chapters' in results %}
+    <div class="card mb-3">
+        <div class="card-header">
+            <h4>Chapters</h4>
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Subject</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for chapter in results['chapters'] %}
+                    <tr>
+                        <td>{{ chapter.name }}</td>
+                        <td>{{ chapter.description or 'No description' }}</td>
+                        <td>{{ chapter.subject.name }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if 'quizzes' in results %}
+    <div class="card mb-3">
+        <div class="card-header">
+            <h4>Quizzes</h4>
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Chapter</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                        <th>Duration</th>
+                        <th>Remarks</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for quiz in results['quizzes'] %}
+                    <tr>
+                        <td>{{ quiz.chapter.name }}</td>
+                        <td>{{ quiz.start_time.strftime('%Y-%m-%d %H:%M') }}</td>
+                        <td>{{ quiz.end_time.strftime('%Y-%m-%d %H:%M') }}</td>
+                        <td>{{ quiz.time_duration }} minutes</td>
+                        <td>{{ quiz.remarks or 'No remarks' }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if 'questions' in results %}
+    <div class="card mb-3">
+        <div class="card-header">
+            <h4>Questions</h4>
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Question Statement</th>
+                        <th>Option 1</th>
+                        <th>Option 2</th>
+                        <th>Option 3</th>
+                        <th>Option 4</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for question in results['questions'] %}
+                    <tr>
+                        <td>{{ question.question_statement }}</td>
+                        <td>{{ question.option1 }}</td>
+                        <td>{{ question.option2 }}</td>
+                        <td>{{ question.option3 }}</td>
+                        <td>{{ question.option4 }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endif %}
+{% endif %}
+</div>
+{% endblock %}

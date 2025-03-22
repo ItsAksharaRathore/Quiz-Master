@@ -1,0 +1,242 @@
+{% extends "base.html" %}
+
+{% block title %}User Dashboard - Quiz Master{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- Available Subjects Section -->
+    <div class="col-md-8">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h4>Available Subjects</h4>
+            </div>
+            <div class="card-body">
+                {% for subject in subjects %}
+                <div class="mb-4">
+                    <h5 class="text-primary">{{ subject.name }}</h5>
+                    <p>{{ subject.description }}</p>
+                    {% for chapter in subject.chapters %}
+                    <div class="ms-4 mb-3">
+                        <h6>{{ chapter.name }}</h6>
+                        <p class="small">{{ chapter.description }}</p>
+                        {% for quiz in chapter.quizzes %}
+                        <a href="{{ url_for('take_quiz', quiz_id=quiz.id) }}" class="btn btn-sm btn-outline-primary">
+                            Take Quiz
+                        </a>
+                        {% endfor %}
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Score Section with Button to Show Quiz History -->
+    <div class="col-md-4">
+        <div class="card shadow">
+            <div class="card-header bg-success text-white">
+                <h4>Your Scores</h4>
+            </div>
+            <div class="card-body">
+                <div style="height: 250px;">
+                    <canvas id="scoresChart"></canvas>
+                </div>
+                <div class="list-group mt-3">
+                    {% for score in scores %}
+                    <div class="list-group-item">
+                        <h6 class="mb-1">{{ score.quiz.chapter.subject.name }} - {{ score.quiz.chapter.name }}</h6>
+                        <p class="mb-1">Score: {{ score.score }}/{{ score.total_questions }}</p>
+                        <small>{{ score.timestamp.strftime('%Y-%m-%d %H:%M:%S %Z') }}</small>
+                    </div>
+                    {% else %}
+                    <p class="text-muted">No scores available yet.</p>
+                    {% endfor %}
+                </div>
+                <button class="btn btn-info mt-3" id="showHistoryBtn">View Quiz History</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Hidden Quiz History Section -->
+<div class="row mt-4" id="quizHistorySection" style="display: none;">
+    <div class="col-md-12">
+        <div class="card shadow">
+            <div class="card-header bg-info text-white">
+                <h4>Your Quiz History</h4>
+            </div>
+            <div class="card-body">
+                {% if attempts %}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Subject - Chapter</th>
+                                <th>Score</th>
+                                <th>Date & Time</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for attempt in attempts %}
+                            <tr>
+                                <td>{{ attempt.quiz.chapter.subject.name }} - {{ attempt.quiz.chapter.name }}</td>
+                                <td>{{ attempt.score }}/{{ attempt.total_questions }} ({{ (attempt.score / attempt.total_questions * 100)|round(1) }}%)</td>
+                                <td>{{ attempt.timestamp.strftime('%Y-%m-%d %H:%M:%S %Z') }}</td>
+                                <td>
+                                    <a href="{{ url_for('view_result', attempt_id=attempt.id) }}" class="btn btn-primary btn-sm">
+                                        View Details
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-muted">No attempts found.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<!-- Make sure Chart.js is loaded -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+document.getElementById("showHistoryBtn").addEventListener("click", function() {
+    var historySection = document.getElementById("quizHistorySection");
+    if (historySection.style.display === "none") {
+        historySection.style.display = "block";
+        this.textContent = "Hide Quiz History";
+    } else {
+        historySection.style.display = "none";
+        this.textContent = "View Quiz History";
+    }
+});
+
+// Only initialize chart if the canvas element exists
+const chartElement = document.getElementById('scoresChart');
+if (chartElement) {
+    const ctx = chartElement.getContext('2d');
+    
+    {% if scores %}
+    // Get the last 5 scores for better visualization
+    const recentScores = [
+        {% for score in scores[:5] %}
+            {
+                label: "{{ score.quiz.chapter.subject.name }} - {{ score.quiz.chapter.name }}",
+                scored: {{ score.score }},
+                total: {{ score.total_questions }},
+                percentage: {{ (score.score / score.total_questions * 100)|round(1) }},
+                date: "{{ score.timestamp.strftime('%m/%d') }}"
+            }{% if not loop.last %},{% endif %}
+        {% endfor %}
+    ].reverse(); // Reverse to show chronological order
+    
+    const labels = recentScores.map(score => score.date);
+    const percentageData = recentScores.map(score => score.percentage);
+    
+    const scoresChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Score (%)',
+                data: percentageData,
+                borderColor: 'rgb(75, 192, 192)',
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderWidth: 2,
+                fill: true,
+                tension: 0.1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        title: function(tooltipItems) {
+                            let index = tooltipItems[0].dataIndex;
+                            return recentScores[index].label;
+                        },
+                        label: function(context) {
+                            let index = context.dataIndex;
+                            return `Score: ${recentScores[index].scored}/${recentScores[index].total} (${recentScores[index].percentage}%)`;
+                        }
+                    }
+                },
+                legend: {
+                    display: true,
+                    position: 'top'
+                },
+                title: {
+                    display: true,
+                    text: 'Your Recent Quiz Performance'
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 100,
+                    title: {
+                        display: true,
+                        text: 'Percentage (%)'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Date'
+                    }
+                }
+            }
+        }
+    });
+    {% else %}
+    // Display a message if no scores are available
+    const noDataMessage = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['No Data'],
+            datasets: [{
+                label: 'No scores available yet',
+                data: [0],
+                backgroundColor: 'rgba(200, 200, 200, 0.2)',
+                borderColor: 'rgb(200, 200, 200)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: true
+                },
+                title: {
+                    display: true,
+                    text: 'Take quizzes to see your performance'
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 100,
+                    title: {
+                        display: true,
+                        text: 'Percentage (%)'
+                    }
+                }
+            }
+        }
+    });
+    {% endif %}
+}
+</script>
+{% endblock %}

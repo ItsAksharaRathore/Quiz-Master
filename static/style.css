@@ -1,0 +1,432 @@
+/* Base Styles */
+
+body {
+    background: linear-gradient(135deg, #273845, #539fd8);
+    min-height: 100vh;
+    font-family: 'Poppins', sans-serif;
+    padding-top: 70px;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.btnlink {
+    color: white;
+    text-decoration-line: none;
+ 
+}
+
+/* Container Layout */
+.container {
+    
+    padding: 2rem 1.5rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Navbar Styles */
+.navbar {
+    transition: all 0.3s ease-in-out;
+    background: linear-gradient(135deg, #1f1f1f, #2c2c2c);
+    padding: 0.8rem 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.navbar-brand {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #f8f9fa !important;
+    text-transform: uppercase;
+    transition: color 0.3s ease-in-out;
+}
+
+.navbar-brand:hover {
+    color: #17a2b8 !important;
+}
+
+.navbar-nav .nav-item .nav-link {
+    font-size: 1.1rem;
+    color: #f8f9fa !important;
+    position: relative;
+    transition: all 0.3s ease-in-out;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.navbar-nav .nav-item .nav-link:hover {
+    color: #17a2b8 !important;
+    text-shadow: 0px 0px 8px rgba(23, 162, 184, 0.8);
+}
+
+.navbar-nav .nav-item .nav-link.active {
+    color: #17a2b8 !important;
+    font-weight: bold;
+    text-shadow: 0px 0px 12px rgba(23, 162, 184, 1);
+}
+
+.navbar-nav .nav-item .nav-link::after {
+    content: "";
+    display: block;
+    height: 2px;
+    width: 0;
+    background-color: #17a2b8;
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    transition: width 0.3s ease-in-out, left 0.3s ease-in-out;
+}
+
+.navbar-nav .nav-item .nav-link:hover::after {
+    width: 100%;
+    left: 0;
+}
+
+/* Dashboard Header */
+.dashboard-header {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.dashboard-header h2 {
+    color: #ffffff;
+    margin-bottom: 1rem;
+    font-size: 2rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Card Styles */
+.card, .custom-card {
+    background: rgba(255, 255, 255, 0.95);
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    transition: all 0.3s ease;
+    margin-bottom: 1.5rem;
+    padding: 20px;
+}
+
+.card:hover, .custom-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+}
+
+.custom-card {
+    background: linear-gradient(to bottom, #539fd8, #376d96);
+    color: white;
+}
+
+.card-header {
+    background: linear-gradient(135deg, #539fd8, #376d96);
+    color: white;
+    border-radius: 12px 12px 0 0 !important;
+    padding: 1.25rem;
+    border: none;
+    font-size: 1.3rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+.card-header h5 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+/* Quiz Page Styles */
+.quiz-container {
+    max-width: 800px;
+    margin: auto;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.timer {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ff5c5c;
+    text-align: right;
+}
+
+.question-container {
+    padding: 1.5rem;
+    border: 1px solid rgba(83, 159, 216, 0.2);
+    margin-bottom: 1.5rem;
+    border-radius: 8px;
+    background-color: white;
+}
+
+.question-container p {
+    font-weight: bold;
+}
+
+.option-container {
+    padding: 1rem;
+    border-radius: 8px;
+    background: #f8f9fa;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.option-container:hover {
+    background: #e0f2ff;
+    transform: scale(1.05);
+}
+
+.selected-option {
+    background: #539fd8 !important;
+    color: white !important;
+}
+
+/* Quiz Status Messages */
+.waiting-message, .quiz-closed-message {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding: 1.5rem;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+}
+.waiting-message { color: #ffc107; }
+.quiz-closed-message { color: #dc3545; }
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .quiz-container { width: 90%; }
+    .timer { font-size: 1.2rem; }
+}
+
+
+
+/* Form Controls */
+.form-control, .glowing-input {
+    border-radius: 6px;
+    border: 2px solid #539fd8;
+    transition: 0.3s ease;
+    background-color: white;
+}
+
+.form-control:focus, .glowing-input:focus {
+    border-color: #376d96;
+    box-shadow: 0 0 10px rgba(55, 109, 150, 0.7);
+}
+
+.navbar .form-control {
+    background-color: #e9e0e0;
+    border: none;
+    color: #fff;
+    transition: all 0.3s ease-in-out;
+}
+
+.navbar .form-control:focus {
+    background-color: #a6a2a2;
+    box-shadow: 0px 0px 8px rgba(23, 162, 184, 0.8);
+}
+
+/* Button Styles */
+.btn {
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-primary, .custom-btn, .add-subject-btn {
+    background: linear-gradient(to right, #539fd8, #376d96);
+    border: none;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    color: white;
+    text-transform: uppercase;
+}
+
+.btn-primary:hover, .custom-btn:hover, .add-subject-btn:hover {
+    background: linear-gradient(to right, #376d96, #539fd8);
+    box-shadow: 0 0 15px rgba(83, 159, 216, 0.8);
+    transform: scale(1.05);
+}
+
+.add-subject-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    width: auto;
+    font-weight: 500;
+}
+
+.btn-success {
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+    transition: all 0.3s ease-in-out;
+}
+
+.btn-success:hover {
+    background-color: #138496;
+    border-color: #117a8b;
+}
+
+/* Accordion Styles */
+.accordion-item {
+    border: 1px solid rgba(83, 159, 216, 0.2);
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.accordion-button {
+    padding: 1.25rem;
+    background: #f8f9fa;
+    font-size: 1.1rem;
+    color: #273845;
+    transition: all 0.3s ease;
+}
+
+.accordion-button:not(.collapsed) {
+    background: linear-gradient(135deg, #539fd8, #376d96);
+    color: #ffffff;
+}
+
+.accordion-button:focus {
+    box-shadow: none;
+    border-color: rgba(83, 159, 216, 0.5);
+}
+
+/* List Group Styles */
+.list-group-item {
+    border: 1px solid rgba(83, 159, 216, 0.2);
+    margin-bottom: 0.75rem;
+    border-radius: 8px !important;
+    transition: all 0.3s ease;
+    background-color: #fff;
+}
+
+.list-group-item:hover {
+    background: #f8f9fa;
+    transform: translateX(4px);
+}
+
+/* Badge Styles */
+.badge {
+    padding: 0.5rem 0.75rem;
+    font-weight: 500;
+    background: linear-gradient(135deg, #539fd8, #376d96);
+}
+
+/* Offcanvas Styles */
+.offcanvas {
+    background: linear-gradient(135deg, #1f1f1f, #2c2c2c);
+}
+
+.offcanvas-header h5 {
+    color: #f8f9fa;
+}
+
+.offcanvas-body .nav-link {
+    color: #f8f9fa !important;
+}
+
+.offcanvas-body .nav-link:hover {
+    color: #17a2b8 !important;
+}
+
+/* Utility Classes */
+.shadow-sm {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+}
+
+.shadow-lg {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12) !important;
+}
+
+
+
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .container {
+        padding: 1rem;
+    }
+    
+    .card-header {
+        padding: 1rem;
+    }
+    
+    .card-body {
+        padding: 1.25rem;
+    }
+    
+    .accordion-button {
+        padding: 1rem;
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .card, .custom-card {
+        width: 90%;
+    }
+
+    .navbar-brand {
+        font-size: 1.4rem;
+    }
+
+    .dashboard-header {
+        flex-direction: row;
+        gap: 1rem;
+    }
+    
+    .dashboard-header h2 {
+        font-size: 1.75rem;
+    }
+    
+    .add-subject-btn {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.875rem;
+    }
+    
+    .btn {
+        padding: 0.4rem 0.8rem;
+    }
+    
+    .list-group-item {
+        margin-bottom: 0.5rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .container {
+        padding: 0.75rem;
+    }
+    
+    .d-flex.gap-2 {
+        flex-direction: column;
+    }
+    
+    .btn {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+}
+
+
+
+
+
+

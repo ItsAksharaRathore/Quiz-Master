@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard - Quiz Master{% endblock %}
+{% block content %}
+
+<div class="container">
+    <!-- Header Section -->
+    <div class="row mb-4">
+        <div class="col-md-8  align-items-center">
+            <a href="{{ url_for('new_subject') }}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Add New Subject
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Subjects and Chapters Section -->
+        <div class="col-lg-8">
+            <div class="card shadow-lg mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Subjects & Chapters</h5>
+                </div>
+                <div class="card-body">
+                    <div class="accordion" id="subjectsAccordion">
+                        {% for subject in subjects %}
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" 
+                                        data-bs-target="#subject{{ subject.id }}">
+                                    📘 {{ subject.name }}
+                                </button>
+                            </h2>
+                            <div id="subject{{ subject.id }}" class="accordion-collapse collapse" 
+                                 data-bs-parent="#subjectsAccordion">
+                                <div class="accordion-body">
+                                    <p class="text-muted">{{ subject.description }}</p>
+                                    <div class="d-grid gap-2">
+                                        <a href="{{ url_for('new_chapter', subject_id=subject.id) }}" 
+                                           class="btn btn-outline-primary btn-sm">
+                                            <i class="fas fa-plus"></i> Add Chapter
+                                        </a>
+                                        <a href="{{ url_for('edit_subject', subject_id=subject.id) }}" 
+                                           class="btn btn-outline-warning btn-sm">
+                                            <i class="fas fa-edit"></i> Edit Subject
+                                        </a>
+                                        <form action="{{ url_for('delete_subject', subject_id=subject.id) }}" method="POST" style="display: inline;">
+                                            <button type="submit" class="btn btn-outline-danger btn-sm"
+                                                    onclick="return confirm('Are you sure you want to delete this subject and all its chapters?');">
+                                                <i class="fas fa-trash-alt"></i> Delete Subject
+                                            </button>
+                                        </form>                                        
+                                    </div>
+                                    
+                                    {% for chapter in subject.chapters %}
+                                    <div class="card mt-3 border-0 shadow-sm">
+                                        <div class="card-body">
+                                            <h6 class="fw-bold">{{ chapter.name }}</h6>
+                                            <p class="small text-muted mb-2">{{ chapter.description }}</p>
+                                            <div class="d-flex gap-2">
+                                                <a href="{{ url_for('new_quiz', chapter_id=chapter.id) }}" 
+                                                   class="btn btn-info btn-sm">
+                                                    <i class="fas fa-file-alt"></i> Create Quiz
+                                                </a>
+                                                <a href="{{ url_for('edit_chapter', chapter_id=chapter.id) }}" 
+                                                   class="btn btn-warning btn-sm">
+                                                    <i class="fas fa-edit"></i> Edit Chapter
+                                                </a>
+                                                <form action="{{ url_for('delete_chapter', chapter_id=chapter.id) }}" method="POST" style="display: inline;">
+                                                    <button type="submit" class="btn btn-danger btn-sm"
+                                                            onclick="return confirm('Are you sure you want to delete this chapter and its quizzes?');">
+                                                        <i class="fas fa-trash-alt"></i> Delete Chapter
+                                                    </button>
+                                                </form>                                                
+                                            </div>
+                                            
+                                            {% for quiz in chapter.quizzes %}
+                                            <div class="card mt-2 border-light shadow-sm">
+                                                <div class="card-body">
+                                                    <h6 class="fw-bold">📝 {{ quiz.title }}</h6>
+                                                    <div class="d-flex gap-2">
+                                                        <a href="{{ url_for('edit_quiz', quiz_id=quiz.id) }}" 
+                                                           class="btn btn-warning btn-sm">
+                                                            <i class="fas fa-edit"></i> Edit Quiz
+                                                        </a>
+                                                        <form action="{{ url_for('delete_quiz', quiz_id=quiz.id) }}" method="POST" style="display: inline;">
+                                                            <button type="submit" class="btn btn-danger btn-sm"
+                                                                    onclick="return confirm('Are you sure you want to delete this quiz?');">
+                                                                <i class="fas fa-trash-alt"></i> Delete Quiz
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        {% else %}
+                        <p class="text-center text-muted">No subjects available. Add a new subject above.</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Users & Quiz Attempts Section -->
+        <div class="col-lg-4">
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Users & Quiz Attempts</h5>
+                </div>
+                <div class="card-body">
+                    <div class="list-group">
+                        <a href="{{ url_for('user_list') }}" class="btn btn-outline-info mb-3">
+                            <i class="fas fa-users"></i> View All Users
+                        </a>
+                        {% for user in users %}
+                        <a href="{{ url_for('user_details', user_id=user.id) }}" 
+                           class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="mb-1 fw-bold">{{ user.full_name }}</h6>
+                                <small class="text-muted">@{{ user.username }}</small>
+                            </div>
+                            <span class="badge bg-primary rounded-pill">
+                                {{ user.quiz_attempts|length }} <i class="fas fa-check-circle"></i>
+                            </span>
+                        </a>
+                      
+
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

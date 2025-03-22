@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Register - Quiz Master{% endblock %}
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh; padding-top: 50px; padding-bottom: 50px;">
+    <div class="col-md-6">
+        <div class="card custom-card">
+            <div class="card-header text-center">Register</div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Email</label>
+                        <input type="email" class="form-control glowing-input" id="username" name="username" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control glowing-input" id="password" name="password" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="full_name" class="form-label">Full Name</label>
+                        <input type="text" class="form-control glowing-input" id="full_name" name="full_name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="qualification" class="form-label">Qualification</label>
+                        <input type="text" class="form-control glowing-input" id="qualification" name="qualification" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="dob" class="form-label">Date of Birth</label>
+                        <input type="date" class="form-control glowing-input" id="dob" name="dob" required>
+                    </div>
+                    <button type="submit" class="btn custom-btn">Register</button>
+                    <a class= "btnlink" href="{{ url_for('login') }}"  >Already have an account? Login</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

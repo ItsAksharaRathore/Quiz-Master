@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}Your Quiz Results{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0">Quiz Results</h3>
+        </div>
+        <div class="card-body">
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <h4>{{ attempt.quiz.chapter.subject.name }}</h4>
+                    <h5>{{ attempt.quiz.chapter.name }}</h5>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <h4>Score: {{ attempt.score }}/{{ attempt.total_questions }}</h4>
+                    <h5>Percentage: {{ (attempt.score / attempt.total_questions * 100)|round(1) }}%</h5>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Question</th>
+                            <th>Your Answer</th>
+                            <th>Correct Answer</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for answer in attempt.answers %}
+                        <tr>
+                            <td>{{ answer.question.question_statement }}</td>
+                            <td>{{ answer.question['option' + answer.selected_option|string] }}</td>
+                            <td>{{ answer.question['option' + answer.question.correct_option|string] }}</td>
+                            <td>
+                                {% if answer.is_correct %}
+                                <span class="badge bg-success">Correct</span>
+                                {% else %}
+                                <span class="badge bg-danger">Incorrect</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="mt-4 text-center">
+                <a href="{{ url_for('view_charts') }}" class="btn btn-info">View Charts</a>
+            </div>
+            
+            <div class="mt-4 d-flex justify-content-between">
+                <a href="{{ url_for('user_dashboard') }}" class="btn btn-secondary">
+                    Back to Dashboard
+                </a>
+                {% if attempt.score < attempt.total_questions %}
+                <a href="{{ url_for('take_quiz', quiz_id=attempt.quiz.id) }}" class="btn btn-primary">
+                    Try Again
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

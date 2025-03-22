@@ -1,0 +1,30 @@
+
+{% extends "base.html" %}
+{% block title %}Create New Subject - Quiz Master{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Create New Subject</h3>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Subject Name</label>
+                            <input type="text" class="form-control" id="name" name="name" required>
+                            <div class="form-text">Enter a unique subject name</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Subject Description</label>
+                            <textarea class="form-control" id="description" name="description" rows="4" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Create Subject</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

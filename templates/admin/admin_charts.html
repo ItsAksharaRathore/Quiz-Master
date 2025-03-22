@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Quiz Statistics{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white text-center">
+            <h3 class="mb-0">📊 Admin Quiz Statistics</h3>
+        </div>
+        <div class="card-body">
+
+            <!-- 📊 Subject-wise Top Scores (Bar Chart) -->
+            <div class="text-center">
+                <h4>🏆 Subject-wise Top Scores</h4>
+                <img src="{{ url_for('static', filename='subject_top_scores.png') }}" class="img-fluid rounded shadow" alt="Top Scores Chart">
+            </div>
+
+            <!-- 📈 Subject-wise Attempts (Line Chart) -->
+            <div class="text-center mt-4">
+                <h4>📈 Subject-wise Quiz Attempts</h4>
+                <img src="{{ url_for('static', filename='subject_attempts.png') }}" class="img-fluid rounded shadow" alt="Quiz Attempts Chart">
+            </div>
+
+            <!-- 🥧 Quiz Attempt Distribution (Pie Chart) -->
+            <div class="text-center mt-4">
+                <h4>🥧 Quiz Attempt Distribution</h4>
+                <img src="{{ url_for('static', filename='quiz_pie_chart.png') }}" class="img-fluid rounded shadow" alt="Pie Chart">
+            </div>
+
+            <!-- 📊 User Approval Status (Bar Chart) -->
+            <div class="text-center mt-4">
+                <h4>👤 User Approval Status</h4>
+                <img src="{{ url_for('static', filename='user_approval_chart.png') }}" class="img-fluid rounded shadow" alt="User Approval Chart">
+            </div>
+
+            <!-- 📊 Interactive Plotly Graph -->
+            <div class="mt-4">
+                <h4>📊 Interactive Quiz Data (Plotly)</h4>
+                <div class="mt-3">
+                    {{ plot_html | safe }}
+                </div>
+            </div>
+
+            <div class="mt-4 text-center">
+                <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">Back to Admin Dashboard</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

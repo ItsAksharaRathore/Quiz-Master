@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Quiz Result - {{ attempt.quiz.chapter.name }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0">Quiz Result: {{ attempt.quiz.chapter.name }}</h3>
+        </div>
+        <div class="card-body">
+            <p>Score: {{ attempt.score }}/{{ attempt.total_questions }}</p>
+            <p>Attempted on: {{ attempt.timestamp.strftime('%Y-%m-%d %H:%M') }}</p>
+            
+            <h4>Your Answers</h4>
+            <div class="list-group">
+                {% for answer in answers %}
+                <div class="list-group-item">
+                    <h5>{{ answer.question.text }}</h5>
+                    <p>Selected: Option {{ answer.selected_option }} 
+                       {% if answer.is_correct %}
+                           <span class="badge bg-success">Correct</span>
+                       {% else %}
+                           <span class="badge bg-danger">Incorrect</span>
+                       {% endif %}
+                    </p>
+                </div>
+                {% else %}
+                <p>No answers available.</p>
+                {% endfor %}
+            </div>
+            
+            <div class="mt-4 d-flex justify-content-between">
+                <a href="{{ url_for('user_dashboard') }}" class="btn btn-secondary">
+                    Back to Dashboard
+                </a>
+                {% if attempt.score < attempt.total_questions %}
+                <a href="{{ url_for('take_quiz', quiz_id=attempt.quiz.id) }}" class="btn btn-primary">
+                    Try Again
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
